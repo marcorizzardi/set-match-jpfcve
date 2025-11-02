@@ -1,161 +1,227 @@
+
 import React from "react";
-import { Stack, Link } from "expo-router";
-import { FlatList, Pressable, StyleSheet, View, Text, Alert, Platform } from "react-native";
+import { Stack, Link, router } from "expo-router";
+import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
 import { IconSymbol } from "@/components/IconSymbol";
 import { GlassView } from "expo-glass-effect";
 import { useTheme } from "@react-navigation/native";
-
-const ICON_COLOR = "#007AFF";
+import { colors } from "@/styles/commonStyles";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const theme = useTheme();
-  const modalDemos = [
-    {
-      title: "Standard Modal",
-      description: "Full screen modal presentation",
-      route: "/modal",
-      color: "#007AFF",
-    },
-    {
-      title: "Form Sheet",
-      description: "Bottom sheet with detents and grabber",
-      route: "/formsheet",
-      color: "#34C759",
-    },
-    {
-      title: "Transparent Modal",
-      description: "Overlay without obscuring background",
-      route: "/transparent-modal",
-      color: "#FF9500",
-    }
-  ];
-
-  const renderModalDemo = ({ item }: { item: (typeof modalDemos)[0] }) => (
-    <GlassView style={[
-      styles.demoCard,
-      Platform.OS !== 'ios' && { backgroundColor: theme.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }
-    ]} glassEffectStyle="regular">
-      <View style={[styles.demoIcon, { backgroundColor: item.color }]}>
-        <IconSymbol name="square.grid.3x3" color="white" size={24} />
-      </View>
-      <View style={styles.demoContent}>
-        <Text style={[styles.demoTitle, { color: theme.colors.text }]}>{item.title}</Text>
-        <Text style={[styles.demoDescription, { color: theme.dark ? '#98989D' : '#666' }]}>{item.description}</Text>
-      </View>
-      <Link href={item.route as any} asChild>
-        <Pressable>
-          <GlassView style={[
-            styles.tryButton,
-            Platform.OS !== 'ios' && { backgroundColor: theme.dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }
-          ]} glassEffectStyle="clear">
-            <Text style={[styles.tryButtonText, { color: theme.colors.primary }]}>Try It</Text>
-          </GlassView>
-        </Pressable>
-      </Link>
-    </GlassView>
-  );
-
-  const renderHeaderRight = () => (
-    <Pressable
-      onPress={() => Alert.alert("Not Implemented", "This feature is not implemented yet")}
-      style={styles.headerButtonContainer}
-    >
-      <IconSymbol name="plus" color={theme.colors.primary} />
-    </Pressable>
-  );
-
-  const renderHeaderLeft = () => (
-    <Pressable
-      onPress={() => Alert.alert("Not Implemented", "This feature is not implemented yet")}
-      style={styles.headerButtonContainer}
-    >
-      <IconSymbol
-        name="gear"
-        color={theme.colors.primary}
-      />
-    </Pressable>
-  );
 
   return (
-    <>
+    <SafeAreaView style={styles.container} edges={['top']}>
       {Platform.OS === 'ios' && (
         <Stack.Screen
           options={{
-            title: "Building the app...",
-            headerRight: renderHeaderRight,
-            headerLeft: renderHeaderLeft,
+            title: "SET Game",
+            headerLargeTitle: true,
           }}
         />
       )}
-      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <FlatList
-          data={modalDemos}
-          renderItem={renderModalDemo}
-          keyExtractor={(item) => item.route}
-          contentContainerStyle={[
-            styles.listContainer,
-            Platform.OS !== 'ios' && styles.listContainerWithTabBar
-          ]}
-          contentInsetAdjustmentBehavior="automatic"
-          showsVerticalScrollIndicator={false}
-        />
+      
+      <View style={styles.content}>
+        <View style={styles.heroSection}>
+          <Text style={styles.title}>SET Card Game</Text>
+          <Text style={styles.subtitle}>
+            Find sets of three cards where each feature is either all the same or all different
+          </Text>
+        </View>
+
+        <Pressable
+          style={styles.playButton}
+          onPress={() => router.push('/(tabs)/(home)/game')}
+        >
+          <IconSymbol name="play.fill" size={32} color={colors.card} />
+          <Text style={styles.playButtonText}>Play Game</Text>
+        </Pressable>
+
+        <View style={styles.rulesContainer}>
+          <Text style={styles.rulesTitle}>How to Play</Text>
+          
+          <View style={styles.ruleItem}>
+            <View style={styles.ruleNumber}>
+              <Text style={styles.ruleNumberText}>1</Text>
+            </View>
+            <Text style={styles.ruleText}>
+              Each card has 4 features: shape, color, number, and shading
+            </Text>
+          </View>
+
+          <View style={styles.ruleItem}>
+            <View style={styles.ruleNumber}>
+              <Text style={styles.ruleNumberText}>2</Text>
+            </View>
+            <Text style={styles.ruleText}>
+              A valid SET has each feature either all the same or all different across 3 cards
+            </Text>
+          </View>
+
+          <View style={styles.ruleItem}>
+            <View style={styles.ruleNumber}>
+              <Text style={styles.ruleNumberText}>3</Text>
+            </View>
+            <Text style={styles.ruleText}>
+              Select 3 cards to check if they form a SET. Earn points for correct sets!
+            </Text>
+          </View>
+
+          <View style={styles.ruleItem}>
+            <View style={styles.ruleNumber}>
+              <Text style={styles.ruleNumberText}>4</Text>
+            </View>
+            <Text style={styles.ruleText}>
+              Use hints if you&apos;re stuck, but they cost points
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.featuresContainer}>
+          <Text style={styles.featuresTitle}>Features</Text>
+          
+          <View style={styles.featureRow}>
+            <View style={styles.featureItem}>
+              <IconSymbol name="star.fill" size={24} color={colors.primary} />
+              <Text style={styles.featureText}>Score Tracking</Text>
+            </View>
+            
+            <View style={styles.featureItem}>
+              <IconSymbol name="clock.fill" size={24} color={colors.secondary} />
+              <Text style={styles.featureText}>Timer</Text>
+            </View>
+          </View>
+
+          <View style={styles.featureRow}>
+            <View style={styles.featureItem}>
+              <IconSymbol name="lightbulb.fill" size={24} color={colors.accent} />
+              <Text style={styles.featureText}>Hints</Text>
+            </View>
+            
+            <View style={styles.featureItem}>
+              <IconSymbol name="arrow.clockwise" size={24} color={colors.highlight} />
+              <Text style={styles.featureText}>Unlimited Games</Text>
+            </View>
+          </View>
+        </View>
       </View>
-    </>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor handled dynamically
+    backgroundColor: colors.background,
   },
-  listContainer: {
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
-  listContainerWithTabBar: {
-    paddingBottom: 100, // Extra padding for floating tab bar
+  heroSection: {
+    alignItems: 'center',
+    marginBottom: 32,
   },
-  demoCard: {
-    borderRadius: 12,
-    padding: 16,
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: colors.text,
     marginBottom: 12,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    lineHeight: 24,
+    paddingHorizontal: 20,
+  },
+  playButton: {
+    backgroundColor: colors.primary,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  demoIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
     justifyContent: 'center',
+    paddingVertical: 18,
+    paddingHorizontal: 32,
+    borderRadius: 16,
+    marginBottom: 32,
+    gap: 12,
+    boxShadow: '0px 4px 12px rgba(0, 122, 255, 0.3)',
+    elevation: 4,
+  },
+  playButtonText: {
+    color: colors.card,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  rulesContainer: {
+    backgroundColor: colors.card,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 24,
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+    elevation: 2,
+  },
+  rulesTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 16,
+  },
+  ruleItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  ruleNumber: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: colors.primary,
     alignItems: 'center',
-    marginRight: 16,
+    justifyContent: 'center',
+    marginRight: 12,
   },
-  demoContent: {
+  ruleNumberText: {
+    color: colors.card,
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  ruleText: {
     flex: 1,
+    fontSize: 15,
+    color: colors.text,
+    lineHeight: 22,
   },
-  demoTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 4,
-    // color handled dynamically
+  featuresContainer: {
+    backgroundColor: colors.card,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 24,
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+    elevation: 2,
   },
-  demoDescription: {
+  featuresTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 16,
+  },
+  featureRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  featureItem: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 8,
+  },
+  featureText: {
     fontSize: 14,
-    lineHeight: 18,
-    // color handled dynamically
-  },
-  headerButtonContainer: {
-    padding: 6,
-  },
-  tryButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
-  },
-  tryButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    // color handled dynamically
+    color: colors.text,
+    textAlign: 'center',
   },
 });
