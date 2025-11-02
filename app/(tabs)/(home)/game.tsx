@@ -127,6 +127,22 @@ export default function GameScreen() {
     });
   }, []);
 
+  const handleAddCards = useCallback(() => {
+    setGameState((prev) => {
+      if (prev.deck.length < CARDS_TO_ADD) {
+        Alert.alert('Game Over', `No more cards in the deck!\n\nFinal Score: ${prev.score}\nTime: ${formatTime(prev.elapsedTime)}\nSets Found: ${prev.foundSets.length}`);
+        return prev;
+      }
+
+      const cardsToAdd = prev.deck.slice(0, CARDS_TO_ADD);
+      return {
+        ...prev,
+        board: [...prev.board, ...cardsToAdd],
+        deck: prev.deck.slice(CARDS_TO_ADD),
+      };
+    });
+  }, []);
+
   const handleHint = useCallback(() => {
     const hint = getHint(gameState.board);
     if (hint) {
@@ -144,23 +160,7 @@ export default function GameScreen() {
       Alert.alert('No Sets Available', 'There are no valid sets on the board. Adding more cards...');
       handleAddCards();
     }
-  }, [gameState.board]);
-
-  const handleAddCards = useCallback(() => {
-    setGameState((prev) => {
-      if (prev.deck.length < CARDS_TO_ADD) {
-        Alert.alert('Game Over', `No more cards in the deck!\n\nFinal Score: ${prev.score}\nTime: ${formatTime(prev.elapsedTime)}\nSets Found: ${prev.foundSets.length}`);
-        return prev;
-      }
-
-      const cardsToAdd = prev.deck.slice(0, CARDS_TO_ADD);
-      return {
-        ...prev,
-        board: [...prev.board, ...cardsToAdd],
-        deck: prev.deck.slice(CARDS_TO_ADD),
-      };
-    });
-  }, []);
+  }, [gameState.board, handleAddCards]);
 
   const handleNewGame = useCallback(() => {
     const deck = generateDeck();
