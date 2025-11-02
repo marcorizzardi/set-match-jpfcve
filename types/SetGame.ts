@@ -1,7 +1,7 @@
 
-export type ShapeType = 'diamond' | 'oval' | 'squiggle';
+export type ShapeType = 'circle' | 'triangle' | 'square';
 export type ColorType = 'red' | 'green' | 'purple';
-export type ShadingType = 'solid' | 'striped' | 'open';
+export type ShadingType = 'empty' | 'striped' | 'filled';
 export type NumberType = 1 | 2 | 3;
 
 export interface Card {

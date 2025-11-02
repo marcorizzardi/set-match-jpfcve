@@ -2,9 +2,9 @@
 import { Card, ShapeType, ColorType, ShadingType, NumberType } from '@/types/SetGame';
 
 export function generateDeck(): Card[] {
-  const shapes: ShapeType[] = ['diamond', 'oval', 'squiggle'];
+  const shapes: ShapeType[] = ['circle', 'triangle', 'square'];
   const colors: ColorType[] = ['red', 'green', 'purple'];
-  const shadings: ShadingType[] = ['solid', 'striped', 'open'];
+  const shadings: ShadingType[] = ['empty', 'striped', 'filled'];
   const numbers: NumberType[] = [1, 2, 3];
 
   const deck: Card[] = [];

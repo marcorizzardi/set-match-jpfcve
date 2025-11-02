@@ -5,6 +5,7 @@ import { Card } from '@/types/SetGame';
 import { colors } from '@/styles/commonStyles';
 import * as Haptics from 'expo-haptics';
 import Animated, { useAnimatedStyle, withSpring, useSharedValue, withSequence } from 'react-native-reanimated';
+import Svg, { Circle, Polygon, Rect, Defs, Pattern, Line } from 'react-native-svg';
 
 interface SetCardProps {
   card: Card;
@@ -78,55 +79,95 @@ function renderShapes(card: Card, cardColor: string) {
 }
 
 function renderShape(shape: string, shading: string, color: string) {
-  const shapeStyle = getShapeStyle(shading, color);
-
+  const patternId = `pattern-${shape}-${shading}-${color.replace('#', '')}`;
+  
   switch (shape) {
-    case 'diamond':
+    case 'circle':
       return (
-        <View style={[styles.diamond, shapeStyle]}>
-          <View style={[styles.diamondInner, shading === 'striped' && styles.striped, { borderColor: color }]} />
-        </View>
+        <Svg width={50} height={50} viewBox="0 0 50 50">
+          <Defs>
+            <Pattern
+              id={patternId}
+              patternUnits="userSpaceOnUse"
+              width="6"
+              height="6"
+              patternTransform="rotate(45)"
+            >
+              <Line x1="0" y1="0" x2="0" y2="6" stroke={color} strokeWidth="2" />
+            </Pattern>
+          </Defs>
+          <Circle
+            cx="25"
+            cy="25"
+            r="20"
+            fill={shading === 'filled' ? color : shading === 'striped' ? `url(#${patternId})` : 'transparent'}
+            stroke={color}
+            strokeWidth="2.5"
+          />
+        </Svg>
       );
-    case 'oval':
+    case 'triangle':
       return (
-        <View style={[styles.oval, shapeStyle]}>
-          <View style={[styles.ovalInner, shading === 'striped' && styles.striped, { borderColor: color }]} />
-        </View>
+        <Svg width={50} height={50} viewBox="0 0 50 50">
+          <Defs>
+            <Pattern
+              id={patternId}
+              patternUnits="userSpaceOnUse"
+              width="6"
+              height="6"
+              patternTransform="rotate(45)"
+            >
+              <Line x1="0" y1="0" x2="0" y2="6" stroke={color} strokeWidth="2" />
+            </Pattern>
+          </Defs>
+          <Polygon
+            points="25,8 45,42 5,42"
+            fill={shading === 'filled' ? color : shading === 'striped' ? `url(#${patternId})` : 'transparent'}
+            stroke={color}
+            strokeWidth="2.5"
+          />
+        </Svg>
       );
-    case 'squiggle':
+    case 'square':
       return (
-        <View style={[styles.squiggle, shapeStyle]}>
-          <View style={[styles.squiggleInner, shading === 'striped' && styles.striped, { borderColor: color }]} />
-        </View>
+        <Svg width={50} height={50} viewBox="0 0 50 50">
+          <Defs>
+            <Pattern
+              id={patternId}
+              patternUnits="userSpaceOnUse"
+              width="6"
+              height="6"
+              patternTransform="rotate(45)"
+            >
+              <Line x1="0" y1="0" x2="0" y2="6" stroke={color} strokeWidth="2" />
+            </Pattern>
+          </Defs>
+          <Rect
+            x="10"
+            y="10"
+            width="30"
+            height="30"
+            fill={shading === 'filled' ? color : shading === 'striped' ? `url(#${patternId})` : 'transparent'}
+            stroke={color}
+            strokeWidth="2.5"
+          />
+        </Svg>
       );
     default:
       return null;
   }
 }
 
-function getShapeStyle(shading: string, color: string) {
-  switch (shading) {
-    case 'solid':
-      return { backgroundColor: color };
-    case 'open':
-      return { backgroundColor: 'transparent', borderColor: color, borderWidth: 2 };
-    case 'striped':
-      return { backgroundColor: 'transparent', borderColor: color, borderWidth: 2 };
-    default:
-      return {};
-  }
-}
-
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
-    borderRadius: 12,
-    padding: 12,
-    margin: 4,
-    minHeight: 120,
+    borderRadius: 10,
+    padding: 8,
+    margin: 3,
+    minHeight: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 3,
+    borderWidth: 2.5,
     borderColor: colors.border,
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
     elevation: 2,
@@ -146,43 +187,9 @@ const styles = StyleSheet.create({
   cardContent: {
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    gap: 4,
   },
   shapeContainer: {
-    marginVertical: 4,
-  },
-  diamond: {
-    width: 60,
-    height: 30,
-    transform: [{ rotate: '45deg' }],
-    borderRadius: 4,
-  },
-  diamondInner: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 4,
-  },
-  oval: {
-    width: 60,
-    height: 30,
-    borderRadius: 15,
-  },
-  ovalInner: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 15,
-  },
-  squiggle: {
-    width: 60,
-    height: 30,
-    borderRadius: 8,
-  },
-  squiggleInner: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 8,
-  },
-  striped: {
-    backgroundColor: 'repeating-linear-gradient(45deg, transparent, transparent 3px, currentColor 3px, currentColor 6px)',
+    marginVertical: 2,
   },
 });

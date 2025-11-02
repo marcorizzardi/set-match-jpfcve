@@ -4,10 +4,10 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Pressable,
   Alert,
   Platform,
+  Dimensions,
 } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,6 +20,8 @@ import { IconSymbol } from '@/components/IconSymbol';
 
 const INITIAL_CARDS = 12;
 const CARDS_TO_ADD = 3;
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function GameScreen() {
   const [gameState, setGameState] = useState<GameState>(() => {
@@ -217,33 +219,29 @@ export default function GameScreen() {
         </View>
       </View>
 
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.boardContainer}>
-          <View style={styles.board}>
-            {gameState.board.map((card) => (
-              <View key={card.id} style={styles.cardWrapper}>
-                <SetCard
-                  card={card}
-                  isSelected={gameState.selectedCards.some((c) => c.id === card.id)}
-                  isHinted={hintedCards.some((c) => c.id === card.id)}
-                  onPress={handleCardPress}
-                />
-              </View>
-            ))}
-          </View>
+      <View style={styles.boardContainer}>
+        <View style={styles.board}>
+          {gameState.board.map((card) => (
+            <View key={card.id} style={styles.cardWrapper}>
+              <SetCard
+                card={card}
+                isSelected={gameState.selectedCards.some((c) => c.id === card.id)}
+                isHinted={hintedCards.some((c) => c.id === card.id)}
+                onPress={handleCardPress}
+              />
+            </View>
+          ))}
         </View>
+      </View>
 
+      <View style={styles.footer}>
         <View style={styles.controls}>
           <Pressable
             style={[styles.button, styles.hintButton]}
             onPress={handleHint}
           >
-            <IconSymbol name="lightbulb.fill" size={20} color={colors.card} />
-            <Text style={styles.buttonText}>Hint (-5)</Text>
+            <IconSymbol name="lightbulb.fill" size={18} color={colors.card} />
+            <Text style={styles.buttonText}>Hint</Text>
           </Pressable>
 
           <Pressable
@@ -251,16 +249,16 @@ export default function GameScreen() {
             onPress={handleAddCards}
             disabled={gameState.deck.length < CARDS_TO_ADD}
           >
-            <IconSymbol name="plus.circle.fill" size={20} color={colors.card} />
-            <Text style={styles.buttonText}>Add 3 Cards</Text>
+            <IconSymbol name="plus.circle.fill" size={18} color={colors.card} />
+            <Text style={styles.buttonText}>Add 3</Text>
           </Pressable>
 
           <Pressable
             style={[styles.button, styles.newGameButton]}
             onPress={handleNewGame}
           >
-            <IconSymbol name="arrow.clockwise" size={20} color={colors.card} />
-            <Text style={styles.buttonText}>New Game</Text>
+            <IconSymbol name="arrow.clockwise" size={18} color={colors.card} />
+            <Text style={styles.buttonText}>New</Text>
           </Pressable>
         </View>
 
@@ -268,11 +266,8 @@ export default function GameScreen() {
           <Text style={styles.infoText}>
             Available Sets: {availableSets.length}
           </Text>
-          <Text style={styles.infoTextSmall}>
-            Select 3 cards that form a valid SET
-          </Text>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -283,8 +278,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     backgroundColor: colors.card,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
@@ -297,40 +292,43 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: colors.textSecondary,
-    marginBottom: 4,
+    marginBottom: 2,
   },
   statValue: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: colors.text,
   },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 100,
-  },
   boardContainer: {
-    padding: 8,
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+    paddingVertical: 8,
   },
   board: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   cardWrapper: {
-    width: '30%',
+    width: '31%',
     aspectRatio: 0.7,
-    minWidth: 100,
-    maxWidth: 140,
+    maxWidth: 120,
+  },
+  footer: {
+    paddingHorizontal: 12,
+    paddingBottom: 8,
+    backgroundColor: colors.card,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
   },
   controls: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 8,
     gap: 8,
   },
   button: {
@@ -338,10 +336,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
     borderRadius: 8,
-    gap: 6,
+    gap: 4,
   },
   hintButton: {
     backgroundColor: colors.accent,
@@ -354,22 +352,17 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: colors.card,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
   },
   infoContainer: {
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 6,
   },
   infoText: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: '600',
     color: colors.text,
-    marginBottom: 4,
-  },
-  infoTextSmall: {
-    fontSize: 14,
-    color: colors.textSecondary,
   },
   headerButton: {
     padding: 8,
