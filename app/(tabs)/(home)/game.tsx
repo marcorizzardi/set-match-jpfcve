@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
   boardContainer: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 4,
+    paddingHorizontal: 8,
     paddingVertical: 8,
   },
   board: {
@@ -312,11 +312,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 6,
   },
   cardWrapper: {
-    width: '31%',
-    aspectRatio: 0.7,
-    maxWidth: 120,
+    width: '30%',
+    aspectRatio: 0.65,
+    minWidth: 80,
+    maxWidth: 110,
   },
   footer: {
     paddingHorizontal: 12,

@@ -84,72 +84,72 @@ function renderShape(shape: string, shading: string, color: string) {
   switch (shape) {
     case 'circle':
       return (
-        <Svg width={50} height={50} viewBox="0 0 50 50">
+        <Svg width={32} height={32} viewBox="0 0 32 32">
           <Defs>
             <Pattern
               id={patternId}
               patternUnits="userSpaceOnUse"
-              width="6"
-              height="6"
+              width="4"
+              height="4"
               patternTransform="rotate(45)"
             >
-              <Line x1="0" y1="0" x2="0" y2="6" stroke={color} strokeWidth="2" />
+              <Line x1="0" y1="0" x2="0" y2="4" stroke={color} strokeWidth="1.5" />
             </Pattern>
           </Defs>
           <Circle
-            cx="25"
-            cy="25"
-            r="20"
+            cx="16"
+            cy="16"
+            r="12"
             fill={shading === 'filled' ? color : shading === 'striped' ? `url(#${patternId})` : 'transparent'}
             stroke={color}
-            strokeWidth="2.5"
+            strokeWidth="2"
           />
         </Svg>
       );
     case 'triangle':
       return (
-        <Svg width={50} height={50} viewBox="0 0 50 50">
+        <Svg width={32} height={32} viewBox="0 0 32 32">
           <Defs>
             <Pattern
               id={patternId}
               patternUnits="userSpaceOnUse"
-              width="6"
-              height="6"
+              width="4"
+              height="4"
               patternTransform="rotate(45)"
             >
-              <Line x1="0" y1="0" x2="0" y2="6" stroke={color} strokeWidth="2" />
+              <Line x1="0" y1="0" x2="0" y2="4" stroke={color} strokeWidth="1.5" />
             </Pattern>
           </Defs>
           <Polygon
-            points="25,8 45,42 5,42"
+            points="16,6 28,26 4,26"
             fill={shading === 'filled' ? color : shading === 'striped' ? `url(#${patternId})` : 'transparent'}
             stroke={color}
-            strokeWidth="2.5"
+            strokeWidth="2"
           />
         </Svg>
       );
     case 'square':
       return (
-        <Svg width={50} height={50} viewBox="0 0 50 50">
+        <Svg width={32} height={32} viewBox="0 0 32 32">
           <Defs>
             <Pattern
               id={patternId}
               patternUnits="userSpaceOnUse"
-              width="6"
-              height="6"
+              width="4"
+              height="4"
               patternTransform="rotate(45)"
             >
-              <Line x1="0" y1="0" x2="0" y2="6" stroke={color} strokeWidth="2" />
+              <Line x1="0" y1="0" x2="0" y2="4" stroke={color} strokeWidth="1.5" />
             </Pattern>
           </Defs>
           <Rect
-            x="10"
-            y="10"
-            width="30"
-            height="30"
+            x="6"
+            y="6"
+            width="20"
+            height="20"
             fill={shading === 'filled' ? color : shading === 'striped' ? `url(#${patternId})` : 'transparent'}
             stroke={color}
-            strokeWidth="2.5"
+            strokeWidth="2"
           />
         </Svg>
       );
@@ -160,36 +160,35 @@ function renderShape(shape: string, shading: string, color: string) {
 
 const styles = StyleSheet.create({
   card: {
+    flex: 1,
     backgroundColor: colors.card,
-    borderRadius: 10,
-    padding: 8,
-    margin: 3,
-    minHeight: 100,
+    borderRadius: 8,
+    padding: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2.5,
+    borderWidth: 2,
     borderColor: colors.border,
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
     elevation: 2,
   },
   selectedCard: {
     borderColor: colors.primary,
-    borderWidth: 3,
+    borderWidth: 2.5,
     boxShadow: '0px 4px 8px rgba(0, 122, 255, 0.3)',
     elevation: 4,
   },
   hintedCard: {
     borderColor: colors.accent,
-    borderWidth: 3,
+    borderWidth: 2.5,
     boxShadow: '0px 4px 8px rgba(255, 149, 0, 0.3)',
     elevation: 4,
   },
   cardContent: {
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 4,
+    gap: 2,
   },
   shapeContainer: {
-    marginVertical: 2,
+    marginVertical: 1,
   },
 });
